@@ -24,8 +24,8 @@ void setup()
  * Function for the Ping Sensor Simply input the pins 
  */
 //--------------------------------------------------------------
-long pingSensor(int triggerPin, int echoPin) {
-  long distance, duration;
+int pingSensor(int triggerPin, int echoPin) {
+  int distance, duration;
 
   digitalWrite(triggerPin,HIGH);
   delayMicroseconds(10);
