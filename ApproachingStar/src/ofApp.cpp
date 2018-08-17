@@ -5,6 +5,8 @@ void ofApp::setup()
 {
     ofSetDataPathRoot("../Resources/data/");
     arduino.listDevices();
+    
+    // Auto Connect the Arduino
     vector <ofSerialDeviceInfo> deviceList = arduino.getDeviceList();
     
     for (int i = 0; i < deviceList.size(); i++) {
@@ -14,11 +16,11 @@ void ofApp::setup()
         }
     }
     
+    // Load the Audio
     starOne.load("star_one.wav");
     starTwo.load("star_two.wav");
     starOne.setLoop(true);
     starTwo.setLoop(true);
-    
     starOne.play();
     starTwo.play();
 }
@@ -27,6 +29,8 @@ void ofApp::setup()
 void ofApp::update()
 {
     readSensorData();
+    
+    // Update the Audio Volume
     starOne.setVolume(ofMap(ofClamp(smoothedDistance1,0,200),0,200,1.0,0.0));
     starTwo.setVolume(ofMap(ofClamp(smoothedDistance2,0,200),0,200,1.0,0.0));
 }
@@ -36,9 +40,11 @@ void ofApp::draw()
 {
     ofBackground(0, 0, 0);
     
+    // Reset the Distance
     smoothedDistance1 = 0;
     smoothedDistance2 = 0;
     
+    // Calculate the Average Distances
     for (int i = 0; i < smoothedDistance[0].size(); i++) {
         smoothedDistance1 += smoothedDistance[0][i];
     }
@@ -50,6 +56,7 @@ void ofApp::draw()
     smoothedDistance1 /= 20;
     smoothedDistance2 /= 20;
     
+    // Draw out the data
     stringstream ss;
     ss << "---------------------------" << endl;
     ss << "Raw Distance from Sensor 1 " << sensorDistance[0] << endl;
@@ -106,21 +113,28 @@ void ofApp::drawPlinth()
 //--------------------------------------------------------------
 void ofApp::readSensorData()
 {
+    // If we have more than 25 entries remove the oldest
     for (int i = 0; i < 2; i++) {
         if(smoothedDistance[i].size() > 25) {
             smoothedDistance[i].pop_back();
         }
     }
     
+    // While the Arduino is sending data
     if (arduino.available() > 0)
     {
         while (arduino.available() > 0)
         {
+            // Read One byte at a time
             arduino.readBytes(bytesReturned, 1);
+            
+            // If its a newline
             if (*bytesReturned == '\n')
             {
                 cpmessage = messageReceived;
+                // Split the string via the comma
                 vector <string> s = ofSplitString(messageReceived,",");
+                
                 if(s.size() > 1) {
                     sensorDistance[0] = ofToInt(s[0]);
                     sensorDistance[1] = ofToInt(s[1]);
