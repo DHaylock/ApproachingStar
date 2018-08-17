@@ -4,7 +4,16 @@
 void ofApp::setup()
 {
     ofSetDataPathRoot("../Resources/data/");
-    arduino.setup("/dev/tty.usbmodem14511", 9600);
+    arduino.listDevices();
+    vector <ofSerialDeviceInfo> deviceList = arduino.getDeviceList();
+    
+    for (int i = 0; i < deviceList.size(); i++) {
+        if (ofIsStringInString(deviceList[i].getDeviceName(), "tty.usbmodem")) {
+            string _arduinoName = "/dev/"+deviceList[i].getDeviceName();
+            arduino.setup(_arduinoName,9600);
+        }
+    }
+    
     starOne.load("star_one.wav");
     starTwo.load("star_two.wav");
     starOne.setLoop(true);
