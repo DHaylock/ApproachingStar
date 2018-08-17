@@ -26,13 +26,14 @@ void setup()
 //--------------------------------------------------------------
 int pingSensor(int triggerPin, int echoPin) {
   int distance, duration;
+  distance = 300;
 
   digitalWrite(triggerPin,HIGH);
   delayMicroseconds(10);
   digitalWrite(triggerPin,LOW);
   duration = pulseIn(echoPin,HIGH);
   distance = (duration/2) / 29.1;
-  return distance;
+  return abs(distance);
 }
 
 /**
@@ -41,6 +42,7 @@ int pingSensor(int triggerPin, int echoPin) {
 //--------------------------------------------------------------
 void loop() {
   int val1 = pingSensor(TRIGGER_PIN_1,ECHO_PIN_1);
+  delay(20);
   int val2 = pingSensor(TRIGGER_PIN_2,ECHO_PIN_2);
   Serial.print(val1);
   Serial.print(",");

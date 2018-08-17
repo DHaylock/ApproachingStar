@@ -19,8 +19,12 @@ void ofApp::setup()
     // Load the Audio
     starOne.load("star_one.wav");
     starTwo.load("star_two.wav");
+    
+    // Make the tracks loop
     starOne.setLoop(true);
     starTwo.setLoop(true);
+  
+    // Play the tracks
     starOne.play();
     starTwo.play();
 }
@@ -53,8 +57,8 @@ void ofApp::draw()
         smoothedDistance2 += smoothedDistance[1][i];
     }
     
-    smoothedDistance1 /= 20;
-    smoothedDistance2 /= 20;
+    smoothedDistance1 /= 5;
+    smoothedDistance2 /= 5;
     
     // Draw out the data
     stringstream ss;
@@ -115,7 +119,7 @@ void ofApp::readSensorData()
 {
     // If we have more than 25 entries remove the oldest
     for (int i = 0; i < 2; i++) {
-        if(smoothedDistance[i].size() > 25) {
+        if(smoothedDistance[i].size() > 5) {
             smoothedDistance[i].pop_back();
         }
     }
