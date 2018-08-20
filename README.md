@@ -13,6 +13,9 @@ A openFrameworks application which receives the data and translates the distance
 
 To change the tracks press tab key then drag and drop the files in to the folder. Then change their names to ***star_one.wav*** and ***star_two.wav***
 
+### Circuit
+![Circuit](./docs/circuit.png)
+
 ### Equipment
 
 Qty | Item | Purpose | Link 
